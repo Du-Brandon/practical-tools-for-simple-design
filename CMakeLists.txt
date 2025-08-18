@@ -113,70 +113,22 @@ set(INCLUDE_FILES
 )
 set(EXAMPLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/example)
 set(EXAMPLE_FILES
-    ${EXAMPLE_DIR}/src/Angel.cpp
     ${EXAMPLE_DIR}/src/App.cpp
-    ${EXAMPLE_DIR}/src/App_otherfunc.cpp
-    ${EXAMPLE_DIR}/src/Arrow.cpp
-    ${EXAMPLE_DIR}/src/Background.cpp
-    ${EXAMPLE_DIR}/src/Boss_1_1.cpp
-    ${EXAMPLE_DIR}/src/Boss_1_2.cpp
-    ${EXAMPLE_DIR}/src/Boss_1_3.cpp
-    ${EXAMPLE_DIR}/src/Boss_1_4.cpp
-    ${EXAMPLE_DIR}/src/Boss_2.cpp
-    ${EXAMPLE_DIR}/src/Boss_3.cpp
-    ${EXAMPLE_DIR}/src/Button.cpp
-    ${EXAMPLE_DIR}/src/Cat.cpp
-    ${EXAMPLE_DIR}/src/Enemy.cpp
-    ${EXAMPLE_DIR}/src/Enemy_1.cpp
-    ${EXAMPLE_DIR}/src/Enemy_2.cpp
-    ${EXAMPLE_DIR}/src/Enemy_3.cpp
-    ${EXAMPLE_DIR}/src/Enemy_4.cpp
-    ${EXAMPLE_DIR}/src/Enemy_5.cpp
-    ${EXAMPLE_DIR}/src/Enemy_6.cpp
-    ${EXAMPLE_DIR}/src/Enemy_7.cpp
-    ${EXAMPLE_DIR}/src/EnemyArrow.cpp
-    ${EXAMPLE_DIR}/src/Exp.cpp
     ${EXAMPLE_DIR}/src/Giraffe.cpp
-    ${EXAMPLE_DIR}/src/Giraffe_other_func.cpp
-    ${EXAMPLE_DIR}/src/Ground_Spikes.cpp
-    ${EXAMPLE_DIR}/src/Hp.cpp
-    ${EXAMPLE_DIR}/src/Skill.cpp
-    ${EXAMPLE_DIR}/src/Wall.cpp
-    ${EXAMPLE_DIR}/src/main.cpp 
-    # ../public/TracyClient.cpp
-    
-    ${EXAMPLE_DIR}/include/Angel.hpp
-    ${EXAMPLE_DIR}/include/App.hpp
-    ${EXAMPLE_DIR}/include/Arrow.hpp
-    ${EXAMPLE_DIR}/include/Background.hpp
-    ${EXAMPLE_DIR}/include/Boss.hpp
-    ${EXAMPLE_DIR}/include/Button.hpp
-    ${EXAMPLE_DIR}/include/Cat.hpp
-    ${EXAMPLE_DIR}/include/Enemy.hpp
-    ${EXAMPLE_DIR}/include/Enemy_1.hpp
-    ${EXAMPLE_DIR}/include/Enemy_2.hpp
-    ${EXAMPLE_DIR}/include/Enemy_3.hpp
-    ${EXAMPLE_DIR}/include/Enemy_4.hpp
-    ${EXAMPLE_DIR}/include/Enemy_5.hpp
-    ${EXAMPLE_DIR}/include/Enemy_6.hpp
-    ${EXAMPLE_DIR}/include/Enemy_7.hpp
-    ${EXAMPLE_DIR}/include/EnemyArrow.hpp
-    ${EXAMPLE_DIR}/include/Exp.hpp
-    ${EXAMPLE_DIR}/include/Giraffe.hpp
-    ${EXAMPLE_DIR}/include/Ground_Spikes.hpp
-    ${EXAMPLE_DIR}/include/Hp.hpp
-    ${EXAMPLE_DIR}/include/log_my.hpp
-    ${EXAMPLE_DIR}/include/Skill.hpp
-    ${EXAMPLE_DIR}/include/Wall.hpp
-    # ../public/tracy/Tracy.hpp
+    ${EXAMPLE_DIR}/src/GiraffeText.cpp
+    ${EXAMPLE_DIR}/src/Cat.cpp
+    ${EXAMPLE_DIR}/src/main.cpp
 
+    ${EXAMPLE_DIR}/include/App.hpp
+    ${EXAMPLE_DIR}/include/Giraffe.hpp
+    ${EXAMPLE_DIR}/include/GiraffeText.hpp
+    ${EXAMPLE_DIR}/include/Cat.hpp
 )
 set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test)
 set(TEST_FILES
     ${TEST_DIR}/SimpleTest.cpp
     ${TEST_DIR}/NotSimpleTest.cpp
     ${TEST_DIR}/TransformTest.cpp
-    ${TEST_DIR}/PositionTest.cpp
 )
 
 add_library(PTSD STATIC
@@ -193,9 +145,11 @@ target_include_directories(PTSD PRIVATE
     ${INCLUDE_DIR}
 )
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_definitions(PTSD PRIVATE PTSD_ASSETS_DIR="./assets")
+    target_compile_definitions(PTSD PRIVATE PTSD_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/assets")
 else()
-    target_compile_definitions(PTSD PRIVATE PTSD_ASSETS_DIR="./assets")
+    # TODO
+    message(AUTHOR_WARNING "relative PTSD_ASSETS_DIR is WIP, Please use `-DCMAKE_BUILD_TYPE=Debug` build for now.")
+    target_compile_definitions(PTSD PRIVATE PTSD_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/assets")
 endif()
 if (${PTSD_ENABLE_PCH})
     target_precompile_headers(PTSD PRIVATE
@@ -227,7 +181,7 @@ target_include_directories(Example PRIVATE
     ${EXAMPLE_DIR}/include
 )
 
-target_compile_definitions(Example PRIVATE ASSETS_DIR="./assets")
+target_compile_definitions(Example PRIVATE ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/assets")
 
 enable_testing()
 
@@ -267,3 +221,4 @@ target_compile_options(AudioTest PRIVATE
 
 include(GoogleTest)
 gtest_discover_tests(Tests)
+gtest_discover_tests(AudioTest)
